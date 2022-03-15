@@ -67,8 +67,17 @@ special_enemies = [{
 }]
 
 items = [{
-    "longsword" : 5,
-    "greatsword" : 10
+    "name" : "longsword",
+    "str stat" : 5,
+    "damage" : 20
+    "price" : 750
+},{
+    "name" : "greatsword",
+    "str stat" : 20,
+    "damage" : 80;
+    "drop" : 100
+},{
+    "name" : ""
 }]
 
 def inventory():
@@ -196,4 +205,5 @@ def combat():
         random_special = random.randint(0, len(special_enemies) - 1)
         print("ALERT, YOU ENCOUNTERED A SPECIAL ENEMY, THE", special_enemies[random_special]["name"] + "!")
         special_enemy_battlemusic()
-combat()
+#combat()
+inventory()
