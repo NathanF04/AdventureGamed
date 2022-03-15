@@ -66,6 +66,16 @@ special_enemies = [{
     "gold" : 3000
 }]
 
+items = [{
+    "longsword" : 5,
+    "greatsword" : 10
+}]
+
+def inventory():
+    inv = {
+        "fists" : 0
+    }
+
 def play_victory_sound():
     playsound("VictorySound.wav")
 
