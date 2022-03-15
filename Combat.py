@@ -1,5 +1,4 @@
 import random, time, sys, os, time, winsound
-import statistics
 from threading import Thread
 from playsound import playsound
 
