@@ -2,6 +2,7 @@ import random, time, sys, os, time, winsound
 from threading import Thread
 from playsound import playsound
 
+print("Welcome....")
 global str_stat
 str_stat = 10
 global vit_stat
