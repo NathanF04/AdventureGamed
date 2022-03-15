@@ -1,25 +1,19 @@
 import random, time, sys, os, time, winsound
+import statistics
 from threading import Thread
 from playsound import playsound
 
-global str_stat
-str_stat = 10
-global vit_stat
-vit_stat = 10
-global total_damage
-total_damage = 400
-global total_hp
-total_hp = 100
-global xp
-xp = 0
-global level_requirement
-level_requirement = 100
-global statpoint
-statpoint = 0
-global player_level
-player_level = 1
-global gold
-gold = 0
+stats = [{
+    "str stat" : 10,
+    "vit stat" : 10,
+    "total damage" : 40,
+    "total hp" : 100,
+    "xp" : 0,
+    "level requirement" : 100,
+    "statpoint" : 0,
+    "player level" : 1,
+    "gold" : 0
+}]
 
 answer_A = ["A", "a"]
 answer_B = ["B", "b"]
@@ -107,13 +101,13 @@ def combat():
         random_enemy = random.randint(0, len(wild_enemies) - 1)
         print("You encountered a", wild_enemies[random_enemy]["name"] + "!")
         damaged_enemy = wild_enemies[random_enemy]["hp"]
-        damaged_player = total_hp
+        damaged_player = stats[0]["total hp"]
         gain_gold = wild_enemies[random_enemy]["gold"]
         while damaged_player > 0 or damaged_enemy > 0:
             action = str(input("\nDo you?\n\nA: Light Attack\nB: Heavy Attack (miss chance: 40%)\nC: Defend\n\nChoose: "))
             if action in answer_A or action in answer_B or action in answer_C:
                 if action in answer_A:
-                    damaged_enemy = damaged_enemy - total_damage
+                    damaged_enemy = damaged_enemy - stats[0]["total damage"]
                     if damaged_enemy <= 0:
                         print("\nYou attacked the", wild_enemies[random_enemy]["name"], "0 /", wild_enemies[random_enemy]["hp"])
                         play_attack_sound()
@@ -123,10 +117,10 @@ def combat():
                         damaged_player = damaged_player - wild_enemies[random_enemy]["damage"]
                         if random.randrange(0, 100) > 30:
                             if damaged_player <= 0:
-                                print("You were attacked by the", wild_enemies[random_enemy]["name"], "0 /", total_hp)
+                                print("You were attacked by the", wild_enemies[random_enemy]["name"], "0 /", stats[0]["total hp"])
                                 play_hurt_sound
                             else:
-                                print("You were attacked by the", wild_enemies[random_enemy]["name"], damaged_player, "/", total_hp)
+                                print("You were attacked by the", wild_enemies[random_enemy]["name"], damaged_player, "/", stats[0]["total hp"])
                                 play_hurt_sound()
                         else:
                             print("They missed")
@@ -136,7 +130,7 @@ def combat():
                         break
                 elif action in answer_B:
                     if random.randrange(0, 100) > 30:
-                        damaged_enemy = damaged_enemy - (total_damage * 1.5)
+                        damaged_enemy = damaged_enemy - (stats[0]["total damage"] * 1.5)
                         if damaged_enemy <= 0:
                             print("\nYou attacked the", wild_enemies[random_enemy]["name"], "0 /", wild_enemies[random_enemy]["hp"])
                             play_attack_sound()
@@ -146,9 +140,9 @@ def combat():
                             damaged_player = damaged_player - wild_enemies[random_enemy]["damage"]
                             if random.randrange(0, 100) > 30:
                                 if damaged_player <= 0:
-                                    print("You were attacked by the", wild_enemies[random_enemy]["name"], "0 /", total_hp)
+                                    print("You were attacked by the", wild_enemies[random_enemy]["name"], "0 /", stats[0]["total hp"])
                                 else:
-                                    print("You were attacked by the", wild_enemies[random_enemy]["name"], damaged_player, "/", total_hp)
+                                    print("You were attacked by the", wild_enemies[random_enemy]["name"], damaged_player, "/", stats[0]["total hp"])
                                     play_hurt_sound()
                             else:
                                 print("They missed!")
@@ -166,32 +160,28 @@ def combat():
             clear_console()
             death_screen()
         elif damaged_enemy <= 0:
-            global gold
-            gold = gold + wild_enemies[random_enemy]["gold"]
-            global xp
-            global level_requirement
-            xp = xp + wild_enemies[random_enemy]["xp"]
+            gold = stats[0]["gold"] + wild_enemies[random_enemy]["gold"]
+            xp = stats[0]["xp"] + wild_enemies[random_enemy]["xp"]
             print("\nYou defeated the", wild_enemies[random_enemy]["name"])
             print("\n\nXP:", xp, "/", level_requirement)
             if xp >= level_requirement:
-                print('YOU LEVELED UP! +1 STAT POINT')
+                print('YOU LEVELED UP! +2 STAT POINTS')
                 stat_change = str(input("Choose what attribute you want make stronger:\n\nA. Strength:\nVitality\n\nChoose: "))
                 if stat_change in answer_A or stat_change in answer_B:
                     if stat_change in answer_A:
-                        str_stat = str_stat + 1
-                        total_damage = total_damage + 4
-                        print("Your damage is now: ", total_damage)
+                        stats[0]["str stat"] += 1
+                        stats[0]["total damage"] += 4
+                        print("Your damage is now: ", stats[0]["total damage"])
                     elif stat_change in answer_B:
-                        vit_stat = vit_stat + 1
-                        total_hp = total_hp + 10
-                        print("Your hp is now: ", total_hp)
-                global player_level
-                player_level = player_level + 1
-                if player_level + 1:
-                    global statpoint
-                    statpoint = statpoint + 2
+                        stats[0]["vit stat"] += 1
+                        stats[0]["total hp"] += 10
+                        print("Your hp is now: ", stats[0]["total hp"])
+                stats[0]["player level"] += 1
+                if stats[0]["player level"] + 1:
+                    stats[0]["statpoint"] += 2
                     level_requirement = level_requirement + level_requirement
-            print("GOLD: +", gain_gold, "(", gold, ")")
+            stats[0]["gold"] += gain_gold
+            print("GOLD: +", gain_gold, "(", stats[0]["gold"], ")")
             play_victory_sound()
     else:
         random_special = random.randint(0, len(special_enemies) - 1)
