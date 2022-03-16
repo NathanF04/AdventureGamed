@@ -2,7 +2,7 @@ import random, time, sys, os, time, winsound
 from threading import Thread
 from playsound import playsound
 
-stats = [{
+stats = {
     "str stat" : 10,
     "vit stat" : 10,
     "total damage" : 40,
@@ -12,7 +12,7 @@ stats = [{
     "statpoint" : 0,
     "player level" : 1,
     "gold" : 0
-}]
+}
 
 answer_A = ["A", "a"]
 answer_B = ["B", "b"]
