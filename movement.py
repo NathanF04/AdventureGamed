@@ -57,7 +57,42 @@ def movement():
         },
         "Bandit House Floor 1" : {
             "name" : "Bandit House Floor 1",
-            "exit" : "Bandit House Entrance"
+            "exit" : "Bandit House Entrance",
+            "north" : "Bandit Floor 1 Staircase",
+            "east" : "Bandit Floor 1 Room 1",
+            "west" : "Bandit Floor 1 Room 2"
+        },
+        "Bandit House Floor 1 Room 1" : {
+            "name" : "Bandit House Floor 1 Room 1",
+            "west" : "Bandit House Floor 1"
+        },
+        "Bandit Floor 1 Room 2" : {
+            "name" : "Bandit House Floor 1 Room 2",
+            "east" : "Bandit House Floor 1"
+        },
+        "Bandit Floor 1 Staircase" : {
+            "name" : "Bandit House Floor 1 Staircase",
+            "enter" : "Bandit House Floor 2",
+            "south" : "Bandit House Floor 1"
+        },
+        "Bandit House Floor 2" : {
+            "name" : "Bandit House Floor 2",
+            "exit" : "Bandit House Floor 1 Staircase",
+            "north" : "Bandit House Floor 2 Bandit Leader Room",
+            "east" : "Bandit House Floor 2 Room 1",
+            "west" : "Bandit House Floor 2 Room 1"
+        },
+        "Bandit House Floor 2 Room 1" : {
+            "name" : "Bandit House Floor 2 Room 1",
+            "west" : "Bandit House Floor 2"
+        },
+        "Bandit House Floor 2 Room 2" : {
+            "name" : "Bandit House Floor 2 Room 2",
+            "east" : "Bandit House Floor 2"
+        },
+        "Bandit House Floor 2 Bandit Leader Room" : {
+            "name" : "Bandit House Floor 2 Bandit Leader Room",
+            "south" : "Bandit House Floor 2"
         },
         "Forest" : {
             "name" : "Forest",
