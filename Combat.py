@@ -68,14 +68,18 @@ special_enemies = [{
 
 items = [{
     "name" : "Longsword",
-    "str stat" : 5,
-    "damage" : 20,
+    "str stat" : 10,
+    "damage" : 40,
     "price" : 750
 },{
     "name" : "Greatsword",
     "str stat" : 20,
     "damage" : 80,
     "drop" : 100
+},{
+    "name" : "Dagger",
+    "str stat" : 5,
+    "damage" : 20,
 }]
 
 def inventory():
