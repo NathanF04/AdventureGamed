@@ -124,13 +124,12 @@ cell_fight = [guard]
 bandit_boss_fight = [bandit_leader]
 random_encounter = wild_enemies[random_enemy]
 
-def combat(random_enemy, cell_fight, bandit_boss_fight, random_encounter):
-    if 
+def combat():
     if random.randrange(0, 100) < 99:
         random_enemy = random.randint(0, len(wild_enemies) - 1)
         print("You encountered a", wild_enemies[random_enemy]["name"] + "!")
         damaged_enemy = wild_enemies[random_enemy]["hp"]
-        damaged_player = stats[0]["total hp"]
+        damaged_player = stats["total hp"]
         gain_gold = wild_enemies[random_enemy]["gold"]
         while damaged_player > 0 or damaged_enemy > 0:
             action = str(input("\nDo you?\n\nA: Light Attack\nB: Heavy Attack (miss chance: 40%)\nC: Defend\n\nChoose: "))
@@ -216,5 +215,5 @@ def combat(random_enemy, cell_fight, bandit_boss_fight, random_encounter):
         random_special = random.randint(0, len(special_enemies) - 1)
         print("ALERT, YOU ENCOUNTERED A SPECIAL ENEMY, THE", special_enemies[random_special]["name"] + "!")
         special_enemy_battlemusic()
-combat(random_enemy, cell_fight, bandit_boss_fight, random_encounter)
+combat()
 #inventory()
