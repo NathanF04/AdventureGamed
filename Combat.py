@@ -20,13 +20,15 @@ answer_C = ["C", "c"]
 yes = ["Y", "y", "yes"]
 no = ["N", "n", "no"]
 
-story_enemies = [{
+guard = [{
     "name" : "Guard",
     "hp" : 200,
     "damage" : 25,
     "xp" : 300,
     "gold" : 750
-},{
+}]
+
+bandit_leader = [{
     "name" : "Bandit Leader",
     "hp" : 750,
     "damage" : 45,
@@ -116,7 +118,14 @@ def death_screen():
     print('                                                   ')
     playsound("deathsound.mp3")
 
-def combat():
+#engage_fight_guard = 
+random_enemy = random.randint(0, len(wild_enemies) - 1)
+cell_fight = [guard]
+bandit_boss_fight = [bandit_leader]
+random_encounter = wild_enemies[random_enemy]
+
+def combat(random_enemy, cell_fight, bandit_boss_fight, random_encounter):
+    if 
     if random.randrange(0, 100) < 99:
         random_enemy = random.randint(0, len(wild_enemies) - 1)
         print("You encountered a", wild_enemies[random_enemy]["name"] + "!")
@@ -207,5 +216,5 @@ def combat():
         random_special = random.randint(0, len(special_enemies) - 1)
         print("ALERT, YOU ENCOUNTERED A SPECIAL ENEMY, THE", special_enemies[random_special]["name"] + "!")
         special_enemy_battlemusic()
-#combat()
-inventory()
+combat(random_enemy, cell_fight, bandit_boss_fight, random_encounter)
+#inventory()
