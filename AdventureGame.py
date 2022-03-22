@@ -95,17 +95,11 @@ items = [{
     "type" : "Weapon"
 }]
 
+drops = 0
+equip_items = 0
+
 inv = [[items[2]["name"], items[2]["type"], items[2]["display damage"]]]
 equip = []
-
-def inventory(inv, equip):
-    length_inv = len(inv)
-    print("name:            type:            damage:            ")
-    print("{}           {}           {}".format(inv[0][0], inv[0][1], inv[0][2]))
-    if "greatsword" in [length_inv]["name"]:
-        print("{}           {}           {}".format(inv[1][0], inv[1][1], inv[1][2]))
-    else:
-        pass
 
 def choose_class():
         class_choice = str(input('Choose between the classes to gain certain attributes: \n\nA: Warrior\n\nStrength: 20\nVitality: 10\n\nB: Tank\n\nStrength: 10\nVitality: 20\n\nC: Maidenless\n\nStrength: 1\nVitality: 10\n\nChoose: '))
@@ -428,19 +422,11 @@ def movement(engage_fight):
         else:
             print("\n{} was not a choice".format(move.capitalize()))
 
-def do_what():
-    do_choice = str(input("What do you want to do?\n\nA. Move\nB. Check inventory\nC. Check stats\n\nChoose: "))
-    if do_choice in answer_A or do_choice in answer_B or do_choice in answer_C:
-        if do_choice in answer_A:
-            movement(engage_fight)
-        elif do_choice in answer_B:
-            inventory(inv, equip)
-            print(inv)
+def inventory(inv, equip):
+    print("\nname:            type:            damage:            ")
+    print("{}           {}           {}".format(inv[0][0], inv[0][1], inv[0][2]))
 
-    else:
-        print("Choose between A, B and C")
-        do_what
-def game(engage_fight, inv):
+def game(engage_fight, inv, drops):
     print("You wake up in a unkown dark room stuck in a cell")
     #time.sleep(2)
     print("The only thing you remember is your past occupation")
@@ -450,21 +436,14 @@ def game(engage_fight, inv):
     print("You look around the cell for something to break out with")
     #time.sleep(2)
     print("You pick up a dagger\n")
-    inventory(inv, equip)
-    equip_item = str(input("\nDo you want to equip it?\n\nA. Yes\nB. No\n\nChoose: "))
-    while True:
-        if equip_item in answer_A or equip_item in answer_B:
-            if equip_item in answer_A:
-                equip.append(items[2]["name"])
-                break
-            elif equip_item in answer_B:
-                print("You stay weak")
-                break
-        else:
-            print("Choose between A and B")
-    if items[2]["name"] in equip:
-        stats["total damage"] += items[2]["damage"]
-        print("\n+{} damage".format(items[2]["damage"]))
+    drops += 1
+    equip_weapon = str(input("Do you want to equip it?\n\nA. Yes\nB. No\n\nChoose: "))
+    if equip_weapon in answer_A or equip_weapon in answer_B:
+        if equip_weapon in answer_A:
+            stats["total damage"] += items[2]["damage"]
+            print("+{}".format(items[2]["display damage"]))
+        elif equip_weapon in answer_B:
+            print("...")
     #time.sleep(2)
     print("\nAfter a while you find an old lock pick in your pocket")
     #time.sleep(2)
@@ -481,8 +460,56 @@ def game(engage_fight, inv):
     #time.sleep(2)
     print("\nTime to move on")
 
-#game(engage_fight, inv)
+def equipped(drops):
+    if equip_items == 1:
+        equip.append(items[2]["name"])
+        print("EQUIPPED: {}".format(items[2]["name"]))
+    elif equip_items == 2:
+        equip.append(items[1]["name"])
+        print("EQUIPPED: {}".format(items[1]["name"]))
+    elif equip_items == 3:
+        equip.append(items[0]["name"])
+        print("EQUIPPED: {}".format(items[0]["name"]))
+
+    if items[2]["name"] in equip:
+        stats["total damage"] += items[2]["damage"]
+        print("\n+{} damage".format(items[2]["damage"]))
+    elif items[1]["name"] in equip:
+        stats["total damage"] += items[1]["damage"]
+        print("\n+{} damage".format(items[1]["damage"]))
+    elif items[0]["name"] in equip:
+        stats["total damage"] += items[0]["damage"]
+        print("\n+{} damage".format(items[0]["damage"]))
+
+def do_what():
+    do_choice = str(input("What do you want to do?\n\nA. Move\nB. Check inventory\nC. Check stats\n\nChoose: "))
+    if do_choice in answer_A or do_choice in answer_B or do_choice in answer_C:
+        if do_choice in answer_A:
+            movement(engage_fight)
+        elif do_choice in answer_B:
+            inventory(inv, equip)
+            if drops == 1:    
+                if items[1]["name"] in inv:
+                    inv.append(items[1]["name"])
+                    print("{}       {}           {}".format(items[1]["name"], items[1]["type"], items[1]["display damage"]))
+                else:
+                    pass
+            elif drops == 2:
+                if items[0]["name"] in inv:
+                    inv.append(items[0]["name"])
+                    print("{}        {}           {}".format(items[0]["name"], items[0]["type"], items[0]["display damage"]))
+                else:
+                    pass
+
+            equipped(drops)
+        elif do_choice in answer_C:
+            print("\nStrength: {}".format(stats["str stat"]))
+            print("Vitality: {}".format(stats["vit stat"]))
+
+    else:
+        print("Choose between A, B and C")
+        do_what()
+
+game(engage_fight, inv, drops)
 inventory(inv, equip)
-inv.append([items[1]["name"], items[1]["type"], items[1]["display damage"]])
-print(inv)
 do_what()
