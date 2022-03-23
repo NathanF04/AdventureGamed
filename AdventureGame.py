@@ -425,6 +425,8 @@ def movement(engage_fight):
 def inventory(inv, equip):
     print("\nname:            type:            damage:            ")
     print("{}           {}           {}".format(inv[0][0], inv[0][1], inv[0][2]))
+    for i in range(0,len(inv-1)):
+        print(inv[i])
 
 def game(engage_fight, inv, drops):
     print("You wake up in a unkown dark room stuck in a cell")
