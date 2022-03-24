@@ -454,19 +454,29 @@ def movement(engage_fight):
             print("\n{} was not a choice".format(move.capitalize()))
 
 def inventory(inv, equip):
-    print("\nName:            Type:            Damage:            ")
+    tal = 1
+    print("\n   Name:            Type:            Damage:            ")
     
     for i in range(0, len(inv)):
-        print("{}       {}           {}".format(items[inv[i]]["name"],items[inv[i]]["type"],items[inv[i]]["effect"]))
+        print("{}. {}       {}           {}".format(tal, items[inv[i]]["name"],items[inv[i]]["type"],items[inv[i]]["effect"]))
+        if len(inv) > 0:
+            tal += 1
+        else:
+            pass
+    tal = 1
     while True:
-        do_what_inv = input("What do you want to do?\n\nA. Equip\nB. Unequip\nC. Exit Inventory")
+        do_what_inv = input("\nWhat do you want to do?\n\nA. Equip\nB. Unequip\nC. Exit Inventory\n\nChoose: ")
         if do_what_inv in answer_A or do_what_inv in answer_B or do_what_inv in answer_C:
             if do_what_inv in answer_A:
-                pass
+                length_inv = len(inv) - 1
+                print("What do you want to equip? (0-{})".format(length_inv))
+                choose_equip = int(input("Choose: "))
+                if items[0, len(inv)]["type"] in equip:
+                    print("You need to unequip an item.")
             elif do_what_inv in answer_B:
                 pass
             elif do_what_inv in answer_C:
-                pass
+                do_what()
         else:
             print("Choose between A, B and C")
 def game(engage_fight, inv):
@@ -484,6 +494,8 @@ def game(engage_fight, inv):
         if equip_weapon in answer_A:
             stats["total damage"] += items[2]["damage"]
             print("\n{}".format(items[2]["effect"]))
+            inv.append(0)
+            inv.append(1)
             inv.append(2)
             inventory(inv, equip)
         elif equip_weapon in answer_B:
