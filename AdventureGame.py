@@ -1,3 +1,4 @@
+#to run type pip install playsound==1.2.2 in terminal
 import random, time, sys, os, time, winsound
 from threading import Thread
 from playsound import playsound
@@ -74,7 +75,7 @@ special_enemies = [{
 }]
 
 items = [{
-    "name" : "Longsword",
+    "name" : "Longsword ",
     "str stat" : 10,
     "damage" : 40,
     "display damage" : "+40",
@@ -88,22 +89,25 @@ items = [{
     "drop" : 100,
     "type" : "Weapon"
 },{
-    "name" : "Dagger",
+    "name" : "Dagger    ",
     "str stat" : 5,
     "damage" : 20,
     "display damage" : "+20",
     "type" : "Weapon"
+},{
+    "name" : "Chestplate",
+    "vit stat" : 10,
+    "hp" : 100,
+    "price" : 500,
+    "type" : "Torso "
 }]
 
-drops = 0
-equip_items = 0
-
-inv = [[items[2]["name"], items[2]["type"], items[2]["display damage"]]]
+inv = []
 equip = []
 
 def choose_class():
         class_choice = str(input('Choose between the classes to gain certain attributes: \n\nA: Warrior\n\nStrength: 20\nVitality: 10\n\nB: Tank\n\nStrength: 10\nVitality: 20\n\nC: Maidenless\n\nStrength: 1\nVitality: 10\n\nChoose: '))
-        if class_choice in answer_A or class_choice in answer_B:
+        if class_choice in answer_A or class_choice in answer_B or class_choice in answer_C:
             if class_choice in answer_A:
                 stats["str stat"] += 10
                 #strength is 20 now
@@ -184,18 +188,18 @@ def combat(engage_fight, gained_levels, gained_stats, gained_damage, gained_hp):
                     damaged_enemy = damaged_enemy - stats["total damage"]
                     if damaged_enemy <= 0:
                         print("\nYou attacked the", fighter["name"], "0 /", fighter["hp"])
-                        play_attack_sound()
+                        #play_attack_sound()
                     else:
                         print("\nYou attacked the", fighter["name"], damaged_enemy, "/", fighter["hp"])
-                        play_attack_sound()
+                        #play_attack_sound()
                         damaged_player = damaged_player - fighter["damage"]
                         if random.randrange(0, 100) > 30:
                             if damaged_player <= 0:
                                 print("You were attacked by the", fighter["name"], "0 /", stats["total hp"])
-                                play_hurt_sound
+                                #play_hurt_sound
                             else:
                                 print("You were attacked by the", fighter["name"], damaged_player, "/", stats["total hp"])
-                                play_hurt_sound()
+                                #play_hurt_sound()
                         else:
                             print("They missed")
                     if damaged_player <= 0:
@@ -207,17 +211,17 @@ def combat(engage_fight, gained_levels, gained_stats, gained_damage, gained_hp):
                         damaged_enemy = damaged_enemy - (stats["total damage"] * 1.5)
                         if damaged_enemy <= 0:
                             print("\nYou attacked the", fighter["name"], "0 /", fighter["hp"])
-                            play_attack_sound()
+                            #play_attack_sound()
                         else:
                             print("\nYou attacked the", fighter["name"], damaged_enemy, "/", fighter["hp"])
-                            play_attack_sound()
+                            #play_attack_sound()
                             damaged_player = damaged_player - fighter["damage"]
                             if random.randrange(0, 100) > 30:
                                 if damaged_player <= 0:
                                     print("You were attacked by the", fighter["name"], "0 /", stats["total hp"])
                                 else:
                                     print("You were attacked by the", fighter["name"], damaged_player, "/", stats["total hp"])
-                                    play_hurt_sound()
+                                    #play_hurt_sound()
                             else:
                                 print("They missed!")
                     else:
@@ -235,17 +239,18 @@ def combat(engage_fight, gained_levels, gained_stats, gained_damage, gained_hp):
             death_screen()
         elif damaged_enemy <= 0:
             gold = stats["gold"] + fighter["gold"]
-            xp = stats["xp"] + fighter["xp"]
+            stats["xp"] = stats["xp"] + fighter["xp"]
             print("You defeated the", fighter["name"])
-            print("\n\nXP:", xp, "/", stats["level requirement"])
-        if xp >= stats["level requirement"]:
-            while xp >= stats["level requirement"]:
+            print("\n\nXP:", stats["xp"], "/", stats["level requirement"])
+        if stats["xp"] >= stats["level requirement"]:
+            while stats["xp"] >= stats["level requirement"]:
+                stats["total hp"] = stats["total hp"]
                 gained_levels += 1
                 gained_stats += 2
                 gained_damage += 8
                 gained_hp += 20
-                xp -= stats["level requirement"]
-                stats["level requirement"] += stats["level requirement"]
+                stats["xp"] -= stats["level requirement"]
+                stats["level requirement"] = stats["level requirement"] * 1.5
             print('YOU GAINED {} LEVELS! +{} STAT POINTS'.format(gained_levels, gained_stats))
             stat_change = str(input("Choose what attribute you want make stronger:\n\nA. Strength:\nB. Vitality\n\nChoose: "))
             if stat_change in answer_A or stat_change in answer_B:
@@ -265,7 +270,7 @@ def combat(engage_fight, gained_levels, gained_stats, gained_damage, gained_hp):
             pass
         stats["gold"] += gain_gold
         print("GOLD: +", gain_gold, "(", gold, ")")
-        play_victory_sound()
+        #play_victory_sound()
     else:
         random_special = random.randint(0, len(special_enemies) - 1)
         print("ALERT, YOU ENCOUNTERED A SPECIAL ENEMY, THE", special_enemies[random_special]["name"] + "!")
@@ -394,6 +399,8 @@ def movement(engage_fight):
     }
     directions = ["north", "east", "south", "west", "go up", "go down", "enter", "exit"]
     current_room = "Dungeon Cell"
+    drop_chance = random.randrange(0, 100)
+
     while True:
         print("\nYou are in the {}.".format(current_room))
         print("\nWhere do you want to move?\n")
@@ -419,16 +426,39 @@ def movement(engage_fight):
             if "Armory" in current_room:
                 engage_fight += 3
                 combat(engage_fight, gained_levels, gained_stats, gained_damage, gained_hp)
+                engage_fight -= 3
+                if drop_chance > 30:
+                    print("You found a chestplate!")
+                    inv.append(3)
+                else:
+                    print("You might want to come back later....")
+                #do_what()
+            elif "Dungeon Mainfloor" in current_room:
+                engage_fight += 3
+                combat(engage_fight, gained_levels, gained_stats, gained_damage, gained_hp)
+                engage_fight -= 3
+                #do_what()
+            elif "Dungeon Mainfloor Room 1" in current_room:
+                engage_fight += 3
+                combat(engage_fight, gained_levels, gained_stats, gained_damage, gained_hp)
+                engage_fight -= 3
+                #do_what()
+            elif "Dungeon Mainfloor Room 2" in current_room:
+                engage_fight += 3
+                combat(engage_fight, gained_levels, gained_stats, gained_damage, gained_hp)
+                engage_fight -= 3
+                #do_what()
         else:
             print("\n{} was not a choice".format(move.capitalize()))
 
 def inventory(inv, equip):
     print("\nname:            type:            damage:            ")
-    print("{}           {}           {}".format(inv[0][0], inv[0][1], inv[0][2]))
-    for i in range(0,len(inv-1)):
-        print(inv[i])
+    
+    for i in range(0, len(inv)):
+        print("{}       {}           {}".format(items[inv[i]]["name"],items[inv[i]]["type"],items[inv[i]]["display damage"]))
 
-def game(engage_fight, inv, drops):
+def game(engage_fight, inv):
+    print(inv)
     print("You wake up in a unkown dark room stuck in a cell")
     #time.sleep(2)
     print("The only thing you remember is your past occupation")
@@ -438,12 +468,13 @@ def game(engage_fight, inv, drops):
     print("You look around the cell for something to break out with")
     #time.sleep(2)
     print("You pick up a dagger\n")
-    drops += 1
     equip_weapon = str(input("Do you want to equip it?\n\nA. Yes\nB. No\n\nChoose: "))
     if equip_weapon in answer_A or equip_weapon in answer_B:
         if equip_weapon in answer_A:
             stats["total damage"] += items[2]["damage"]
-            print("+{}".format(items[2]["display damage"]))
+            print("\n{}".format(items[2]["display damage"]))
+            inv.append(2)
+            inventory(inv, equip)
         elif equip_weapon in answer_B:
             print("...")
     #time.sleep(2)
@@ -462,27 +493,6 @@ def game(engage_fight, inv, drops):
     #time.sleep(2)
     print("\nTime to move on")
 
-def equipped(drops):
-    if equip_items == 1:
-        equip.append(items[2]["name"])
-        print("EQUIPPED: {}".format(items[2]["name"]))
-    elif equip_items == 2:
-        equip.append(items[1]["name"])
-        print("EQUIPPED: {}".format(items[1]["name"]))
-    elif equip_items == 3:
-        equip.append(items[0]["name"])
-        print("EQUIPPED: {}".format(items[0]["name"]))
-
-    if items[2]["name"] in equip:
-        stats["total damage"] += items[2]["damage"]
-        print("\n+{} damage".format(items[2]["damage"]))
-    elif items[1]["name"] in equip:
-        stats["total damage"] += items[1]["damage"]
-        print("\n+{} damage".format(items[1]["damage"]))
-    elif items[0]["name"] in equip:
-        stats["total damage"] += items[0]["damage"]
-        print("\n+{} damage".format(items[0]["damage"]))
-
 def do_what():
     do_choice = str(input("What do you want to do?\n\nA. Move\nB. Check inventory\nC. Check stats\n\nChoose: "))
     if do_choice in answer_A or do_choice in answer_B or do_choice in answer_C:
@@ -490,28 +500,16 @@ def do_what():
             movement(engage_fight)
         elif do_choice in answer_B:
             inventory(inv, equip)
-            if drops == 1:    
-                if items[1]["name"] in inv:
-                    inv.append(items[1]["name"])
-                    print("{}       {}           {}".format(items[1]["name"], items[1]["type"], items[1]["display damage"]))
-                else:
-                    pass
-            elif drops == 2:
-                if items[0]["name"] in inv:
-                    inv.append(items[0]["name"])
-                    print("{}        {}           {}".format(items[0]["name"], items[0]["type"], items[0]["display damage"]))
-                else:
-                    pass
-
-            equipped(drops)
+            do_what()
         elif do_choice in answer_C:
             print("\nStrength: {}".format(stats["str stat"]))
             print("Vitality: {}".format(stats["vit stat"]))
-
+            do_what()
     else:
         print("Choose between A, B and C")
         do_what()
 
-game(engage_fight, inv, drops)
-inventory(inv, equip)
+game(engage_fight, inv)
 do_what()
+
+#add chance of finding chestplate in armory
