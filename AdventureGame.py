@@ -78,25 +78,26 @@ items = [{
     "name" : "Longsword ",
     "str stat" : 10,
     "damage" : 40,
-    "display damage" : "+40",
+    "effect" : "+40 damage",
     "price" : 750,
     "type" : "Weapon"
 },{
     "name" : "Greatsword",
     "str stat" : 20,
     "damage" : 80,
-    "display damage" : "+80",
+    "effect" : "+80 damage",
     "drop" : 100,
     "type" : "Weapon"
 },{
     "name" : "Dagger    ",
     "str stat" : 5,
     "damage" : 20,
-    "display damage" : "+20",
+    "effect" : "+20 damage",
     "type" : "Weapon"
 },{
     "name" : "Chestplate",
     "vit stat" : 10,
+    "effect" : "+100 vitality",
     "hp" : 100,
     "price" : 500,
     "type" : "Torso "
@@ -430,6 +431,7 @@ def movement(engage_fight):
                 if drop_chance > 30:
                     print("You found a chestplate!")
                     inv.append(3)
+                    inventory(inv, equip)
                 else:
                     print("You might want to come back later....")
                 #do_what()
@@ -452,13 +454,22 @@ def movement(engage_fight):
             print("\n{} was not a choice".format(move.capitalize()))
 
 def inventory(inv, equip):
-    print("\nname:            type:            damage:            ")
+    print("\nName:            Type:            Damage:            ")
     
     for i in range(0, len(inv)):
-        print("{}       {}           {}".format(items[inv[i]]["name"],items[inv[i]]["type"],items[inv[i]]["display damage"]))
-
+        print("{}       {}           {}".format(items[inv[i]]["name"],items[inv[i]]["type"],items[inv[i]]["effect"]))
+    while True:
+        do_what_inv = input("What do you want to do?\n\nA. Equip\nB. Unequip\nC. Exit Inventory")
+        if do_what_inv in answer_A or do_what_inv in answer_B or do_what_inv in answer_C:
+            if do_what_inv in answer_A:
+                pass
+            elif do_what_inv in answer_B:
+                pass
+            elif do_what_inv in answer_C:
+                pass
+        else:
+            print("Choose between A, B and C")
 def game(engage_fight, inv):
-    print(inv)
     print("You wake up in a unkown dark room stuck in a cell")
     #time.sleep(2)
     print("The only thing you remember is your past occupation")
@@ -472,7 +483,7 @@ def game(engage_fight, inv):
     if equip_weapon in answer_A or equip_weapon in answer_B:
         if equip_weapon in answer_A:
             stats["total damage"] += items[2]["damage"]
-            print("\n{}".format(items[2]["display damage"]))
+            print("\n{}".format(items[2]["effect"]))
             inv.append(2)
             inventory(inv, equip)
         elif equip_weapon in answer_B:
