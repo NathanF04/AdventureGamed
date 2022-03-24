@@ -471,8 +471,8 @@ def inventory(inv, equip):
                 length_inv = len(inv) - 1
                 print("What do you want to equip? (0-{})".format(length_inv))
                 choose_equip = int(input("Choose: "))
-                if items[0, len(inv)]["type"] in equip:
-                    print("You need to unequip an item.")
+                #if  in equip:
+                    #print("You need to unequip an item.")
             elif do_what_inv in answer_B:
                 pass
             elif do_what_inv in answer_C:
@@ -494,9 +494,8 @@ def game(engage_fight, inv):
         if equip_weapon in answer_A:
             stats["total damage"] += items[2]["damage"]
             print("\n{}".format(items[2]["effect"]))
-            inv.append(0)
-            inv.append(1)
             inv.append(2)
+            equip.append(items[2][])
             inventory(inv, equip)
         elif equip_weapon in answer_B:
             print("...")
