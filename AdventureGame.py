@@ -453,34 +453,61 @@ def movement(engage_fight):
         else:
             print("\n{} was not a choice".format(move.capitalize()))
 
+def show_inventory():
+        tal = 1
+        print("\n   Name:            Type:            Damage:            ")
+
+        for i in range(0, len(inv)):
+            print("{}. {}       {}           {}".format(tal, items[inv[i]]["name"],items[inv[i]]["type"],items[inv[i]]["effect"]))
+            if len(inv) > 0:
+                tal += 1
+            else:
+                pass
+        tal = 1            
+
 def inventory(inv, equip):
-    tal = 1
-    print("\n   Name:            Type:            Damage:            ")
-    
-    for i in range(0, len(inv)):
-        print("{}. {}       {}           {}".format(tal, items[inv[i]]["name"],items[inv[i]]["type"],items[inv[i]]["effect"]))
-        if len(inv) > 0:
-            tal += 1
-        else:
-            pass
-    tal = 1
+    show_inventory()
     while True:
         do_what_inv = input("\nWhat do you want to do?\n\nA. Equip\nB. Unequip\nC. Exit Inventory\n\nChoose: ")
         if do_what_inv in answer_A or do_what_inv in answer_B or do_what_inv in answer_C:
             if do_what_inv in answer_A:
                 length_inv = len(inv) - 1
-                print("What do you want to equip? (0-{})".format(length_inv))
-                choose_equip = int(input("Choose: "))
-                if "Weapon" in equip:
-                    print("\nYou already have a weapon equipped, unequip to equip.")
-                if "Torso " in equip:
-                    print("\nYou already have a torso equipped, unequip to equip.")
+                show_inventory()
+                print(equip)
+                print("\nWhat do you want to equip? (enter item index number)")
+                print(inv)
+                choose_equip = input("Choose: ")
+                if choose_equip in inv:
+                    if "Weapon" not in equip:
+                        if choose_equip == 0:
+                            equip.append(items[0]["name"])
+                        elif choose_equip == 1:
+                            equip.append(items[1]["name"])
+                        elif choose_equip == 2:
+                            equip.append(items[2]["name"])
+                    else:
+                        print("You already have a weapon equipped, please unequip.")
+                    if "Torso" not in equip:
+                        if choose_equip == 3:
+                            equip.append(items[3]["name"])
+                    else:
+                        print("You already have a torso equipped, please unequip.")
+                else:
+                    print("You do not have this item.")
             elif do_what_inv in answer_B:
                 pass
             elif do_what_inv in answer_C:
                 do_what()
         else:
             print("Choose between A, B and C")
+        #if items[0]["name"] in equip:
+        #    stats["total damage"] += 40
+        #elif items[1]["name"] in equip:
+        #    stats["total damage"] += 80
+        #elif items[2]["name"] in equip:
+        #    stats["total damage"] += 20
+        #elif items[3]["name"] in equip:
+        #    stats["total hp"] += 100    
 def game(engage_fight, inv):
     print("You wake up in a unkown dark room stuck in a cell")
     #time.sleep(2)
@@ -498,7 +525,7 @@ def game(engage_fight, inv):
             print("\n{}".format(items[2]["effect"]))
             inv.append(2)
             inv.append(1)
-            equip.append(items[2]["type"])
+            equip.append(items[2]["name"])
             inventory(inv, equip)
         elif equip_weapon in answer_B:
             print("...")
